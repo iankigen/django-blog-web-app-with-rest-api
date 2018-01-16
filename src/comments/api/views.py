@@ -1,6 +1,7 @@
 from rest_framework.filters import (
     SearchFilter
 )
+from rest_framework.mixins import DestroyModelMixin, UpdateModelMixin
 from rest_framework.generics import (
     CreateAPIView,
     DestroyAPIView,
@@ -19,6 +20,7 @@ from .serializers import (
     CommentListSerializer,
     CommentDeleteSerializer,
     CommentDetailSerializer,
+    CommentEditSerializer,
     create_comment_serializer,
 )
 from ..models import Comment
@@ -53,6 +55,20 @@ class CommentDetailApiView(RetrieveAPIView):
     queryset = Comment.objects.all()
     serializer_class = CommentDetailSerializer
     permission_classes = [IsOwnerOrReadOnly]
+
+    lookup_url_kwarg = 'id'
+
+
+class CommentEditAPIView(DestroyModelMixin, UpdateModelMixin, RetrieveAPIView):
+    queryset = Comment.objects.filter(id__gte=0)
+    serializer_class = CommentEditSerializer
+
+    def put(self, request, *args, **kwargs):
+
+        return self.update(request, *args, **kwargs)
+
+    def delete(self, request, *args, **kwargs):
+        return self.destroy(request, *args, **kwargs)
 
     lookup_url_kwarg = 'id'
 
