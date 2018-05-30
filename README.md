@@ -1,6 +1,6 @@
 # Django-Blog-with-REST-Api
 
-Django blog application with Restful api
+Blog web application with Django Rest Framework API
 
 ## Testing
 
